@@ -17,11 +17,13 @@ import javax.swing.JOptionPane;
 public class Jugador extends Personaje implements KeyListener {
 
     int jugador;
+    int vida;
     
     public Jugador(int inicio_x, int inicio_y, int tipo,Pintado dibujo)
     {
         super(inicio_x,inicio_y, dibujo);
         this.jugador = tipo;
+        this.vida = 3;
     }
     
     @Override
@@ -60,7 +62,7 @@ public class Jugador extends Personaje implements KeyListener {
                 break;
             }
             case 's':{
-                
+                break;
             }
             case 'd':{
                 movDer();
@@ -74,12 +76,11 @@ public class Jugador extends Personaje implements KeyListener {
         switch(tecla)
         {
             case 'j':{
-                // Mover nave a la izquierda
                 movIzq();
                 break;
             }
             case 's':{
-                
+                break;
             }
             case 'l':{
                 movDer();

@@ -5,8 +5,12 @@
  */
 package Juego;
 
+import Entidades.Enemigo;
 import Entidades.Jugador;
 import Ventana.Ventana;
+import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.JFrame;
 
 /**
@@ -20,7 +24,7 @@ public class Juego {
     final int cuadro_dibujo;
     final Ventana ventana;
     final Pintado dibujo;
-    
+    int fe_enemiga = 1;
     
     public Juego(int velocidad_enemigos,int tiempo_partida,int cuadro_dibujo)
     {
@@ -42,6 +46,12 @@ public class Juego {
         this.ventana.addKeyListener(nj1);
         this.ventana.addKeyListener(nj2);
         
+        // Crear enemigos 
+        ExecutorService ejecutorInsertar = Executors.newCachedThreadPool();
+        for (int i = 0; i < 10; i++) {
+            ejecutorInsertar.execute( crearEnemigo() );
+         }
+        
         // Mostrar Ventana de Juego
         this.ventana.repaint();
         this.ventana.setLayout(null);
@@ -57,6 +67,18 @@ public class Juego {
         Jugador nj = new Jugador(this.dibujo.filas-2, (tipo == 1) ? 1 : this.dibujo.columnas - 2, tipo, dibujo);
         nj.pintar();
         return nj;
+    }
+    
+    private Enemigo crearEnemigo()
+    {
+        int inicio_y = getRandomColumnas();
+        Enemigo ne = new Enemigo(0, inicio_y, this.fe_enemiga, this.dibujo);
+        return ne;
+    }
+    
+    private int getRandomColumnas()
+    {
+        return new Random().nextInt((this.dibujo.columnas - 1 - 0) + 1);
     }
     
     
