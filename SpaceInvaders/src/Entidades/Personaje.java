@@ -21,10 +21,13 @@ public abstract class Personaje {
     {
         this.pos_x = pos_x;
         this.pos_y = pos_y;
+        this.dibujo = dibujo;
     }
     
     /**
      * Pintar personaje en tablero
      */
     public abstract void pintar();
+    
+    public abstract void despintar();
 }

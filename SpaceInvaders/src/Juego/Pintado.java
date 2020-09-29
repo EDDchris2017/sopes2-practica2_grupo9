@@ -52,7 +52,7 @@ public class Pintado {
     
     public Casilla[][] pintarTablero()
     {
-       this.panel_juego.setSize(800, 600);
+       this.panel_juego.setSize(600, 600);
        this.filas    = (int)this.panel_juego.getWidth() / tam_cuadro;
        this.columnas = (int)this.panel_juego.getHeight() / tam_cuadro;
        this.tablero  = new Casilla[this.filas][this.columnas];
@@ -63,7 +63,7 @@ public class Pintado {
            for(int y = 0; y < this.columnas; y++)
            {
                Casilla nueva_casilla = new Casilla(tam_cuadro);
-               nueva_casilla.setImage(new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + this.vacio_img, 0);
+               //nueva_casilla.setImage(new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + this.vacio_img, 0);
                tablero[x][y] = nueva_casilla;
                this.panel_juego.add(tablero[x][y]);
            }
@@ -74,14 +74,19 @@ public class Pintado {
     }
     
     /**
-     * Validar que el punto a pintar o despintar es valido
+     * Validar que el punto a pintar o despintar esta dentro del limite
      * @param pos_x
      * @param pos_y
      * @return Booleano indicando si el punto es valido
      */
     public boolean puntoValido(int pos_x, int pos_y)
     {
-        return (!(pos_x >= 0 && pos_x <=this.filas && pos_y >= 0 && pos_y <= this.columnas));
+        return ((pos_x >= 0 && pos_x <this.filas && pos_y >= 0 && pos_y < this.columnas));
+    }
+    
+    public boolean hayAmigo(int x,int y)
+    {
+        return this.tablero[x][y].getOcupado() == 2 || this.tablero[x][y].getOcupado() == 1;
     }
     
     /**
@@ -98,12 +103,16 @@ public class Pintado {
         {
             case 4:
                 img_ruta += this.disparo_img;
+                break;
             case 3:
                 img_ruta += this.enemigo_img;
+                break;
             case 2:
                 img_ruta += this.player2_img;
+                break;
             case 1:
                 img_ruta += this.player1_img;
+                break;
             default:
                 img_ruta += this.vacio_img;
         }
@@ -114,7 +123,9 @@ public class Pintado {
     
     public void despintar(int x, int y)
     {
-        
+        //String ruta = new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + this.vacio_img;
+        String ruta = "";
+        this.tablero[x][y].setImage(ruta,0);
     }
 
 }

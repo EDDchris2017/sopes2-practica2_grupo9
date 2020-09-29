@@ -5,6 +5,7 @@
  */
 package Juego;
 
+import Entidades.Jugador;
 import Ventana.Ventana;
 import javax.swing.JFrame;
 
@@ -34,12 +35,29 @@ public class Juego {
     {
         // Preparar Tablero
         this.dibujo.pintarTablero();
+        
+        // Creando Jugador 1
+        Jugador nj1 = crearJugador(1);
+        Jugador nj2 = crearJugador(2);
+        this.ventana.addKeyListener(nj1);
+        this.ventana.addKeyListener(nj2);
+        
         // Mostrar Ventana de Juego
         this.ventana.repaint();
         this.ventana.setLayout(null);
         this.ventana.setVisible(true);
     }
     
+    /**
+     * Crear un nuevo Jugador
+     * @return 
+     */
+    private Jugador crearJugador(int tipo)
+    {
+        Jugador nj = new Jugador(this.dibujo.filas-2, (tipo == 1) ? 1 : this.dibujo.columnas - 2, tipo, dibujo);
+        nj.pintar();
+        return nj;
+    }
     
     
 }

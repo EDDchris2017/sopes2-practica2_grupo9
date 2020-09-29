@@ -18,7 +18,7 @@ import javax.swing.JLabel;
  */
 public class Casilla extends JLabel{
     
-    //3 = disparo ; 2 = enemigo ; 1 = amigo ; 0 = nada 
+    //4 = disparo ; 3 = enemigo ; 2 = amigo2 ; 1 = amigo1 ; 0 = nada 
     int ocupado;
     
     public Casilla(int cuadro){
@@ -31,14 +31,17 @@ public class Casilla extends JLabel{
     
     public void setImage(String ruta,int ocupado)
     {
-        
+        this.ocupado = ocupado;
         ImageIcon fot = new ImageIcon(ruta);
-        Icon icono = new ImageIcon(fot.getImage().getScaledInstance(super.getWidth()+34, super.getHeight(), Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(fot.getImage().getScaledInstance(super.getWidth(), super.getHeight(), Image.SCALE_DEFAULT));
         super.setIcon(icono);
         super.repaint();
     }
     
-    
+    public int getOcupado()
+    {
+        return this.ocupado;
+    }
          
             
     /**
