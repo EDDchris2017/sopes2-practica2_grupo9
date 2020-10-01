@@ -11,7 +11,11 @@ import Ventana.Ventana;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -32,25 +36,27 @@ public class Juego {
         this.tiempo_partida     = tiempo_partida;
         this.cuadro_dibujo      = cuadro_dibujo;
         this.ventana            = new Ventana();
-        this.dibujo             = new Pintado(ventana.panel_juego, cuadro_dibujo);
+        this.dibujo             = new Pintado(ventana, cuadro_dibujo);
     }
     
     public void iniciarJuego()
     {
-        // Preparar Tablero
+        // **** Preparar Tablero *****
         this.dibujo.pintarTablero();
         
-        // Creando Jugador 1
+        // **** Creando Jugadores ****
         Jugador nj1 = crearJugador(1);
         Jugador nj2 = crearJugador(2);
+        ExecutorService ejecutorJugadores = Executors.newCachedThreadPool();
+        ejecutorJugadores.execute(nj1);
+        ejecutorJugadores.execute(nj2);
         this.ventana.addKeyListener(nj1);
         this.ventana.addKeyListener(nj2);
         
-        // Crear enemigos 
-        ExecutorService ejecutorInsertar = Executors.newCachedThreadPool();
-        for (int i = 0; i < 10; i++) {
-            ejecutorInsertar.execute( crearEnemigo() );
-         }
+        // **** Creando Enemigos ****
+        ExecutorService generadorEnemigos = Executors.newSingleThreadExecutor();
+        generadorEnemigos.execute(generarEnemigos);
+        
         
         // Mostrar Ventana de Juego
         this.ventana.repaint();
@@ -69,10 +75,10 @@ public class Juego {
         return nj;
     }
     
-    private Enemigo crearEnemigo()
+    private Enemigo crearEnemigo(int frecuencia)
     {
         int inicio_y = getRandomColumnas();
-        Enemigo ne = new Enemigo(0, inicio_y, this.fe_enemiga, this.dibujo);
+        Enemigo ne = new Enemigo(0, inicio_y, frecuencia, this.dibujo);
         return ne;
     }
     
@@ -80,6 +86,26 @@ public class Juego {
     {
         return new Random().nextInt((this.dibujo.columnas - 1 - 0) + 1);
     }
+    
+    public Runnable generarEnemigos = new Runnable() {
+        @Override
+        public void run() {
+            try{
+                while(ventana.isVisible())
+                {
+                    int tiempo_llegada = 1500 - (100 * fe_enemiga);
+                    Enemigo enemigo = crearEnemigo(tiempo_llegada);
+                    Thread hilo_enemigo = new Thread(enemigo);
+                    hilo_enemigo.start();
+                    Thread.sleep(tiempo_llegada);
+                }
+            }catch(InterruptedException ex)
+            {
+                JOptionPane.showMessageDialog(null, "Error al generar enemigos");
+            }
+           
+        }
+    };
     
     
 }

@@ -8,13 +8,16 @@ package Entidades;
 import Juego.Pintado;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author cr-al
  */
-public class Jugador extends Personaje implements KeyListener {
+public class Jugador extends Personaje implements KeyListener,Runnable {
 
     int jugador;
     int vida;
@@ -39,8 +42,10 @@ public class Jugador extends Personaje implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
         char tecla = e.getKeyChar();
-        if(this.jugador == 1) movJugador1(tecla);
-            else movJugador2(tecla);
+        if(this.vida > 0){
+            if(this.jugador == 1) movJugador1(tecla);
+                else movJugador2(tecla);
+        }
     }
 
     @Override
@@ -79,7 +84,7 @@ public class Jugador extends Personaje implements KeyListener {
                 movIzq();
                 break;
             }
-            case 's':{
+            case 'k':{
                 break;
             }
             case 'l':{
@@ -96,7 +101,6 @@ public class Jugador extends Personaje implements KeyListener {
         int npos_y = this.pos_y - 1;
         if ( moverValido(this.pos_x, npos_y) )
         {
-            // Realizar Movimiento
             despintar();
             this.pos_y = npos_y;
             pintar();
@@ -117,6 +121,39 @@ public class Jugador extends Personaje implements KeyListener {
     private boolean moverValido(int x,int y)
     {
         return this.dibujo.puntoValido(x, y) && !this.dibujo.hayAmigo(x, y);
+    }
+
+    @Override
+    public void run() {
+        
+        while(this.vida > 0)
+        {
+            revisarSalud();
+            this.dibujo.mostrarVida(jugador, vida);
+        }  
+    }
+    
+    private void revisarSalud()
+    {
+         try {
+        //Verificar si hay un enemigo
+        if(this.dibujo.hayEnemigo(pos_x, pos_y))
+        {
+            this.vida --;
+            if ( this.vida > 0) {
+                this.dibujo.pintarDolor(pos_x, pos_y, jugador);
+                Thread.sleep(600);
+                this.dibujo.pintar(pos_x, pos_y, jugador);
+            }
+            else {
+                this.dibujo.pintarExplosion(pos_x, pos_y);
+                Thread.sleep(600);
+                this.dibujo.despintar(pos_x, pos_y);
+            }
+        }
+        }catch (InterruptedException ex) {
+                Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     

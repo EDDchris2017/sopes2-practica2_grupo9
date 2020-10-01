@@ -22,19 +22,18 @@ public class Enemigo extends Personaje implements Runnable{
     {
         super(pos_x,pos_y,dibujo);
         this.vida = 2;
-        this.tiempo_llegada = 1100 - (100*fe_llegada);
+        this.tiempo_llegada = 800;
         if(tiempo_llegada <= 0) this.tiempo_llegada = 100;
     }
     
     @Override
     public void run() {
-        
         try {
-            Thread.sleep(this.tiempo_llegada);
-            while(true){
+            pintar();
+            while(this.dibujo.puntoValido(pos_x, pos_y)){
                 Thread.sleep(this.tiempo_llegada);
                 // Mover 
-                movAbajo();
+                if(!movAbajo())break;
             }
             
         } catch (InterruptedException ex) {
@@ -52,7 +51,7 @@ public class Enemigo extends Personaje implements Runnable{
         this.dibujo.despintar(pos_x, pos_y);
     }
     
-    private void movAbajo()
+    private boolean movAbajo()
     {
         int npos_x = this.pos_x + 1;
         if ( this.dibujo.puntoValido(npos_x, pos_y) )
@@ -60,11 +59,21 @@ public class Enemigo extends Personaje implements Runnable{
             despintar();
             this.pos_x = npos_x;
             pintar();
-            
-        }else{
+            if (revisarChoque()) return false;
+        }else
+        {
             despintar();
-           Thread.interrupted();
         }
+        return true;
     }
     
+    private boolean revisarChoque()
+    {
+        if ( this.dibujo.hayAmigo(pos_x, pos_y)){
+            this.dibujo.despintar(pos_x, pos_y);
+            return true;
+        }
+        return false;
+
+    }
 }
