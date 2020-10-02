@@ -6,6 +6,7 @@
 package Juego;
 
 import Entidades.Casilla;
+import Entidades.Personaje;
 import Ventana.Ventana;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -100,13 +101,23 @@ public class Pintado {
         return this.tablero[x][y].getOcupado() == 3;
     }
     
+    public boolean hayDisparo(int x, int y)
+    {
+        return this.tablero[x][y].getOcupado() == 4;
+    }
+    
+    public Personaje getPersonaje(int x, int y)
+    {
+        return this.tablero[x][y].personaje;
+    }
+    
     /**
      * 
      * @param pos_x posicion x del tablero
      * @param pos_y posicion y del tablero 
      * @param tipo  4 = disparo ; 3 = enemigo ; 2 = amigo2 ; 1 = amigo1 ; 0 = nada 
      */
-    public void pintar(int pos_x,int pos_y,int tipo)
+    public void pintar(int pos_x,int pos_y,int tipo, Personaje personaje)
     {
         // Pintar posicion
         String img_ruta = new File(".").getAbsolutePath().replace(".","") + "imagenes\\";
@@ -127,26 +138,26 @@ public class Pintado {
             default:
                 img_ruta += this.vacio_img;
         }
-        actualizarTablero(pos_x, pos_y, img_ruta, tipo);
+        actualizarTablero(pos_x, pos_y, img_ruta, tipo, personaje);
     }
     
-    public void pintarExplosion(int x, int y)
+    public void pintarExplosion(int x, int y, int jugador, Personaje per)
     {
         String img_ruta = new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + this.explosion_img;
-        actualizarTablero(x, y, img_ruta, 0);
+        actualizarTablero(x, y, img_ruta, jugador, per);
         
     }
     
-    public void pintarDolor(int x, int y, int jugador)
+    public void pintarDolor(int x, int y, int jugador, Personaje per)
     {
         String img_ruta = new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + ((jugador == 1) ? this.dolor_j1 : this.dolor_j2);
-        actualizarTablero(x, y, img_ruta, jugador);
+        actualizarTablero(x, y, img_ruta, jugador ,per);
         
     }
     
-    private void actualizarTablero(int x,int y, String img, int contenido)
+    private void actualizarTablero(int x,int y, String img, int contenido, Personaje personaje)
     {
-        this.tablero[x][y].setImage(img, contenido);
+        this.tablero[x][y].setImage(img, contenido, personaje);
         this.tablero[x][y].repaint();
         this.panel_juego.repaint();
     }
@@ -155,7 +166,7 @@ public class Pintado {
     {
         //String ruta = new File(".").getAbsolutePath().replace(".","") + "imagenes\\" + this.vacio_img;
         String ruta = "";
-        this.tablero[x][y].setImage(ruta,0);
+        this.tablero[x][y].setImage(ruta,0, null);
     }
     
     // ******************************* COMPONENTES DE VISTA ********************************

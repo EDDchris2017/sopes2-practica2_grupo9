@@ -8,6 +8,7 @@ package Entidades;
 import Juego.Pintado;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,11 +30,14 @@ public class Enemigo extends Personaje implements Runnable{
     @Override
     public void run() {
         try {
-            pintar();
-            while(this.dibujo.puntoValido(pos_x, pos_y)){
+            while(this.vida > 0 && this.dibujo.puntoValido(pos_x, pos_y)){
+                pintar();
+                if(revisarChoque()) break;
                 Thread.sleep(this.tiempo_llegada);
-                // Mover 
-                if(!movAbajo())break;
+                if(revisarChoque()) break;
+                despintar();
+                
+                this.pos_x++;
             }
             
         } catch (InterruptedException ex) {
@@ -43,7 +47,7 @@ public class Enemigo extends Personaje implements Runnable{
 
     @Override
     public void pintar() {
-        this.dibujo.pintar(pos_x, pos_y, 3);
+        this.dibujo.pintar(pos_x, pos_y, 3, this);
     }
 
     @Override
@@ -51,29 +55,40 @@ public class Enemigo extends Personaje implements Runnable{
         this.dibujo.despintar(pos_x, pos_y);
     }
     
-    private boolean movAbajo()
+    private void movAbajo()
     {
         int npos_x = this.pos_x + 1;
-        if ( this.dibujo.puntoValido(npos_x, pos_y) )
-        {
-            despintar();
-            this.pos_x = npos_x;
-            pintar();
-            if (revisarChoque()) return false;
-        }else
-        {
-            despintar();
+        this.pos_x = npos_x;
+    }
+    
+    public Runnable revisarDaño = new Runnable() {
+        @Override
+        public void run() {
+                while(vida > 0 && dibujo.puntoValido(pos_x, pos_y))
+                {
+                    revisarDaño();
+                }
         }
-        return true;
+    };
+    
+    private void revisarDaño()
+    {
+        if ( this.dibujo.hayDisparo(pos_x, pos_y) ) this.vida--;
     }
     
     private boolean revisarChoque()
     {
-        if ( this.dibujo.hayAmigo(pos_x, pos_y)){
-            this.dibujo.despintar(pos_x, pos_y);
-            return true;
-        }
-        return false;
+        return this.dibujo.hayAmigo(pos_x, pos_y);
 
+    }
+    
+    private void revisarSalud()
+    {
+        if(this.dibujo.hayDisparo(pos_x, pos_y)) this.vida --;
+    }
+    
+    public void daño()
+    {
+        this.vida--;
     }
 }

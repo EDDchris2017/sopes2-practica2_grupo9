@@ -39,7 +39,9 @@ public class Ventana extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         v_j2 = new javax.swing.JLabel();
+        cont_fe = new javax.swing.JLabel();
         v_j1 = new javax.swing.JLabel();
+        label_fe = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,9 +71,17 @@ public class Ventana extends javax.swing.JFrame {
         v_j2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         v_j2.setForeground(new java.awt.Color(0, 0, 255));
 
+        cont_fe.setBackground(new java.awt.Color(204, 204, 255));
+        cont_fe.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        cont_fe.setForeground(new java.awt.Color(0, 204, 51));
+
         v_j1.setBackground(new java.awt.Color(204, 204, 255));
         v_j1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         v_j1.setForeground(new java.awt.Color(0, 204, 51));
+
+        label_fe.setBackground(new java.awt.Color(204, 204, 255));
+        label_fe.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        label_fe.setForeground(new java.awt.Color(0, 204, 51));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -91,7 +101,12 @@ public class Ventana extends javax.swing.JFrame {
                         .addGap(79, 79, 79)
                         .addComponent(v_j2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
+                        .addGap(51, 51, 51)
+                        .addComponent(cont_fe, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(label_fe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
                         .addComponent(v_j1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
@@ -104,11 +119,15 @@ public class Ventana extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jLabel2)
-                        .addGap(62, 62, 62)
-                        .addComponent(jLabel3)
-                        .addGap(4, 4, 4)
-                        .addComponent(v_j1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cont_fe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label_fe, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(v_j1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(v_j2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -163,11 +182,23 @@ public class Ventana extends javax.swing.JFrame {
         JLabel label = (tipo_jugador == 1) ? this.v_j1 : this.v_j2;
         label.setText(String.valueOf(vida));
     }
+    
+    public void mostrarFe(int fe)
+    {
+        this.label_fe.setText(String.valueOf(fe));
+    }
+    
+    public void contFe(int cont)
+    {
+        this.cont_fe.setText(String.valueOf(cont) + " -> ");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel cont_fe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel label_fe;
     private javax.swing.JPanel p_juego;
     private javax.swing.JLabel v_j1;
     private javax.swing.JLabel v_j2;

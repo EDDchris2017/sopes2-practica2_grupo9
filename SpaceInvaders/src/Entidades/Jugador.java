@@ -31,7 +31,7 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
     
     @Override
     public void pintar() {
-        this.dibujo.pintar(pos_x, pos_y, this.jugador);
+        this.dibujo.pintar(pos_x, pos_y, this.jugador, this);
     }
     
     @Override
@@ -67,6 +67,7 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
                 break;
             }
             case 's':{
+                disparar();
                 break;
             }
             case 'd':{
@@ -85,6 +86,7 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
                 break;
             }
             case 'k':{
+                disparar();
                 break;
             }
             case 'l':{
@@ -118,6 +120,13 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
         }
     }
     
+    private void disparar()
+    {
+        Disparo nd = new Disparo(this.pos_x - 1, this.pos_y, this.dibujo);
+        Thread hilo_disparo = new Thread(nd);
+        hilo_disparo.start();
+    }
+    
     private boolean moverValido(int x,int y)
     {
         return this.dibujo.puntoValido(x, y) && !this.dibujo.hayAmigo(x, y);
@@ -141,12 +150,12 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
         {
             this.vida --;
             if ( this.vida > 0) {
-                this.dibujo.pintarDolor(pos_x, pos_y, jugador);
+                this.dibujo.pintarDolor(pos_x, pos_y, jugador,this);
                 Thread.sleep(600);
-                this.dibujo.pintar(pos_x, pos_y, jugador);
+                this.dibujo.pintar(pos_x, pos_y, jugador, this);
             }
             else {
-                this.dibujo.pintarExplosion(pos_x, pos_y);
+                this.dibujo.pintarExplosion(pos_x, pos_y,this.jugador, this);
                 Thread.sleep(600);
                 this.dibujo.despintar(pos_x, pos_y);
             }
@@ -156,5 +165,9 @@ public class Jugador extends Personaje implements KeyListener,Runnable {
         }
     }
 
+    public boolean murio()
+    {
+        return this.vida  <= 0 ;
+    }
     
 }
