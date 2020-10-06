@@ -1,0 +1,3 @@
+# Excluding IDEA files
+.idea/
+out/
