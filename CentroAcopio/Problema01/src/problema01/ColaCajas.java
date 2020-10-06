@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
@@ -106,10 +107,12 @@ public class ColaCajas<E> {
         Border lleno = BorderFactory.createLineBorder(Color.ORANGE, 5);
         for (int x = 0; x < cola.size(); x++) {
             cajas[x].setBorder(lleno);
+            cajas[x].setIcon(new ImageIcon(getClass().getResource("/imagenes/02.png")));
         }
         Border vacio = BorderFactory.createLineBorder(Color.black, 5);
         for (int x = cola.size(); x < maximo; x++) {
             cajas[x].setBorder(vacio);
+            cajas[x].setIcon(new ImageIcon(getClass().getResource("/imagenes/01.jpg")));
         }
     }
 }

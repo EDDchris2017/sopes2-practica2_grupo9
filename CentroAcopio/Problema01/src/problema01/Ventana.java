@@ -10,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
@@ -34,6 +35,7 @@ public class Ventana extends javax.swing.JFrame {
                 cajas[x * 4 + y] = new JLabel();
                 cajas[x * 4 + y].setBorder(blackline);
                 cajas[x * 4 + y].setBounds(150 + 55 * x, 80 + 55 * y, 50, 50);
+                cajas[x * 4 + y].setIcon(new ImageIcon(getClass().getResource("/imagenes/01.jpg")));
                 this.add(cajas[x * 4 + y]);
             }
         }
@@ -168,6 +170,7 @@ public class Ventana extends javax.swing.JFrame {
         Border blackline = BorderFactory.createLineBorder(Color.black, 5);
         for (int x = 0; x < 20; x++) {
             cajas[x].setBorder(blackline);
+            cajas[x].setIcon(new ImageIcon(getClass().getResource("/imagenes/01.jpg")));
         }
         ColaCajas<Integer> cola = new ColaCajas<>(20, cajas, jl_llegan, jl_recoger, jl_entraron, jl_salen);
 
